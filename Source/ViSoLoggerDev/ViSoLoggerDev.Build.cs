@@ -2,20 +2,19 @@
 
 using UnrealBuildTool;
 
-public class ViSoLogger : ModuleRules
+public class ViSoLoggerDev : ModuleRules
 {
-	public ViSoLogger(ReadOnlyTargetRules Target) : base(Target)
+	public ViSoLoggerDev(ReadOnlyTargetRules Target) : base(Target)
 	{
 		PCHUsage = ModuleRules.PCHUsageMode.UseExplicitOrSharedPCHs;
-		
+
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
 				"Core",
 				// ... add other public dependencies that you statically link with here ...
 			}
-			);
-			
+		);
 		
 		PrivateDependencyModuleNames.AddRange(
 			new string[]
@@ -24,15 +23,7 @@ public class ViSoLogger : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
-				"GameplayTags"
-			}
-			);
-		
-		
-		DynamicallyLoadedModuleNames.AddRange(
-			new string[]
-			{
-				// ... add any modules that your module loads dynamically here ...
+				"UnrealEd",
 			}
 			);
 	}
