@@ -24,6 +24,11 @@
 			"Name": "ViSoLoggerDev",
 			"Type": "UncookedOnly",
 			"LoadingPhase": "PreDefault"
+		},
+		{
+			"Name": "ViSoLoggerEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
 		}
 	]
 }

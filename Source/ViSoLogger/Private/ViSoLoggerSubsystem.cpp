@@ -1,6 +1,8 @@
 // ©Vi-So Construction
 
 #include "ViSoLoggerSubsystem.h"
+#include "Kismet/GameplayStatics.h"
+#include "Save/ViSoLogSave.h"
 
 DEFINE_LOG_CATEGORY(ViSoLog)
 
@@ -18,6 +20,16 @@ void UViSoLoggerSubsystem::VSLog(FViSoLogData LogData, FViSoLogNavigationData Na
 void UViSoLoggerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-	
-	VISO_LOG(FViSoLogData("ViSoLoggerSubSystem is initialized"));
+
+	static FString SaveGameName = "ViSoLogSave";
+
+	if (UGameplayStatics::DoesSaveGameExist(SaveGameName, 0))
+	{
+		ViSoLogSave = Cast<UViSoLogSave>(UGameplayStatics::LoadGameFromSlot(SaveGameName, 0));
+	}
+	else
+	{
+		ViSoLogSave = Cast<UViSoLogSave>(UGameplayStatics::CreateSaveGameObject(UViSoLogSave::StaticClass()));
+		UGameplayStatics::SaveGameToSlot(ViSoLogSave, SaveGameName, 0);
+	}
 }

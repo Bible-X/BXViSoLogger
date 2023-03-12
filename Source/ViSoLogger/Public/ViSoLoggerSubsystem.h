@@ -14,6 +14,8 @@
 DECLARE_LOG_CATEGORY_EXTERN(ViSoLog, Log, All);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdateDebuggerUI);
 
+class UViSoLogSave;
+
 /**
  * 
  */
@@ -23,6 +25,9 @@ class VISOLOGGER_API UViSoLoggerSubsystem : public UEngineSubsystem
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintReadOnly)
+	TObjectPtr<UViSoLogSave> ViSoLogSave;
+
 	UPROPERTY(BlueprintAssignable)
 	FUpdateDebuggerUI UpdateDebuggerUI;
 	

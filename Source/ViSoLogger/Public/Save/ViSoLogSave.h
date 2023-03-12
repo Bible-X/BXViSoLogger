@@ -14,6 +14,10 @@ class VISOLOGGER_API UViSoLogSave : public USaveGame
 {
 	GENERATED_BODY()
 
+public:
+	UPROPERTY(BlueprintReadOnly)
 	TArray<FViSoLogSessionData> RuntimeSessionsData;
+
+	UPROPERTY(BlueprintReadOnly)
 	TArray<FViSoLogSessionData> EditorSessionsData;
 };
