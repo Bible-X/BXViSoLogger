@@ -23,7 +23,7 @@
 		{
 			"Name": "ViSoLoggerDev",
 			"Type": "UncookedOnly",
-			"LoadingPhase": "Default"
+			"LoadingPhase": "PreDefault"
 		}
 	]
 }
