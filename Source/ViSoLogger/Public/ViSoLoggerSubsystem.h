@@ -12,6 +12,7 @@
 #define VISO_LOG(LogData) UViSoLoggerSubsystem::VSLog(LogData, FViSoLogNavigationData(this), GET_CLASSNAME_WITH_FUNCTION, GET_LINE_NUMBER)
 
 DECLARE_LOG_CATEGORY_EXTERN(ViSoLog, Log, All);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdateDebuggerUI);
 
 /**
  * 
@@ -22,6 +23,9 @@ class VISOLOGGER_API UViSoLoggerSubsystem : public UEngineSubsystem
 	GENERATED_BODY()
 
 public:
+	UPROPERTY(BlueprintAssignable)
+	FUpdateDebuggerUI UpdateDebuggerUI;
+	
 	UFUNCTION(BlueprintCallable)
 	static void K2_VSLog(FString Log);
 
