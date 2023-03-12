@@ -15,4 +15,5 @@ class VISOLOGGER_API UViSoLogSave : public USaveGame
 	GENERATED_BODY()
 
 	TArray<FViSoLogSessionData> RuntimeSessionsData;
+	TArray<FViSoLogSessionData> EditorSessionsData;
 };

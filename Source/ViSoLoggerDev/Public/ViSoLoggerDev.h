@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
-class FViSoLoggerModule : public IModuleInterface
+class FViSoLoggerDevModule : public IModuleInterface
 {
 public:
 
