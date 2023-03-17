@@ -6,22 +6,42 @@
 
 DEFINE_LOG_CATEGORY(ViSoLog)
 
-void UViSoLoggerSubsystem::K2_VSLog(FString Log)
+void UViSoLoggerSubsystem::K2_VSLog(FString Message, FString WhatToDo)
 {
-	UE_LOG(ViSoLog, Error, TEXT("%s"), *Log);
+	static UViSoLoggerSubsystem* LoggerSubSystem;
+	if (!LoggerSubSystem)
+	{
+		if(!GEngine) {return;}
+		LoggerSubSystem = GEngine->GetEngineSubsystem<UViSoLoggerSubsystem>();
+		if (!LoggerSubSystem) {return;}
+	}
+	
+	UE_LOG(ViSoLog, Error, TEXT("%s"), *Message);
+	
+	FViSoLogData LogData = FViSoLogData(Message, WhatToDo);
+	FViSoLogNavigationData NavData = FViSoLogNavigationData();
+	LoggerSubSystem->CurrentEditorSession.SessionLogs.Add(FViSoStoredLogData(LogData, NavData));
 }
 
 void UViSoLoggerSubsystem::VSLog(FViSoLogData LogData, FViSoLogNavigationData NavData, FString ClassName, FString Line)
 {
+	static UViSoLoggerSubsystem* LoggerSubSystem;
+	if (!LoggerSubSystem)
+	{
+		if(!GEngine) {return;}
+		LoggerSubSystem = GEngine->GetEngineSubsystem<UViSoLoggerSubsystem>();
+		if (!LoggerSubSystem) {return;}
+	}
+	
 	const FString Log = ClassName + "[" + Line + "]: " + LogData.Message + LogData.WhatToDo;
 	UE_LOG(ViSoLog, Error, TEXT("%s"), *Log);
+
+	LoggerSubSystem->CurrentEditorSession.SessionLogs.Add(FViSoStoredLogData(LogData, NavData));
 }
 
 void UViSoLoggerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	static FString SaveGameName = "ViSoLogSave";
 
 	if (UGameplayStatics::DoesSaveGameExist(SaveGameName, 0))
 	{
@@ -32,4 +52,14 @@ void UViSoLoggerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 		ViSoLogSave = Cast<UViSoLogSave>(UGameplayStatics::CreateSaveGameObject(UViSoLogSave::StaticClass()));
 		UGameplayStatics::SaveGameToSlot(ViSoLogSave, SaveGameName, 0);
 	}
+}
+
+void UViSoLoggerSubsystem::Deinitialize()
+{
+	if (ViSoLogSave)
+	{
+		UGameplayStatics::SaveGameToSlot(ViSoLogSave, SaveGameName, 0);
+	}
+	
+	Super::Deinitialize();
 }

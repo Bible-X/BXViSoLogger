@@ -18,7 +18,7 @@
 		{
 			"Name": "ViSoLogger",
 			"Type": "Runtime",
-			"LoadingPhase": "PreDefault"
+			"LoadingPhase": "PostEngineInit"
 		},
 		{
 			"Name": "ViSoLoggerDev",
