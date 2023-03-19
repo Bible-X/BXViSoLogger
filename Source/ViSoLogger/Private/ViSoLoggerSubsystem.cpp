@@ -6,38 +6,39 @@
 
 DEFINE_LOG_CATEGORY(ViSoLog)
 
-void UViSoLoggerSubsystem::K2_VSLog(FString Message, FString WhatToDo)
+void UViSoLoggerSubsystem::K2_VSLog(UObject* Instigator, FString Message, FString WhatToDo)
 {
-	static UViSoLoggerSubsystem* LoggerSubSystem;
-	if (!LoggerSubSystem)
-	{
-		if(!GEngine) {return;}
-		LoggerSubSystem = GEngine->GetEngineSubsystem<UViSoLoggerSubsystem>();
-		if (!LoggerSubSystem) {return;}
-	}
+	GET_LOGGERSUBSYSTEM();
 	
 	UE_LOG(ViSoLog, Error, TEXT("%s"), *Message);
 	
-	FViSoLogData LogData = FViSoLogData(Message, WhatToDo);
-	FViSoLogNavigationData NavData = FViSoLogNavigationData();
-	LoggerSubSystem->CurrentEditorSession.SessionLogs.Insert(FViSoStoredLogData(LogData, NavData, false), 0);
+	FViSoLogData LogData = FViSoLogData(Instigator, Message, WhatToDo);
+	FViSoLogNavTarget NavData = FViSoLogNavTarget();
+	LoggerSubSystem->CurrentEditorSession.SessionLogs.Add(FViSoStoredLogData(LogData, NavData, false));
 	LoggerSubSystem->UpdateViSoLogUI.Broadcast();
 }
 
-void UViSoLoggerSubsystem::VSLog(FViSoLogData LogData, FViSoLogNavigationData NavData, FString ClassName, FString Line)
+void UViSoLoggerSubsystem::VSLog(FViSoLogData LogData, FString ClassName, FString Line)
 {
-	static UViSoLoggerSubsystem* LoggerSubSystem;
-	if (!LoggerSubSystem)
-	{
-		if(!GEngine) {return;}
-		LoggerSubSystem = GEngine->GetEngineSubsystem<UViSoLoggerSubsystem>();
-		if (!LoggerSubSystem) {return;}
-	}
+	GET_LOGGERSUBSYSTEM();
 	
 	const FString Log = ClassName + "[" + Line + "]: " + LogData.Message + LogData.WhatToDo;
 	UE_LOG(ViSoLog, Error, TEXT("%s"), *Log);
 
-	LoggerSubSystem->CurrentEditorSession.SessionLogs.Insert(FViSoStoredLogData(LogData, NavData, true), 0);
+	FViSoLogNavTarget NavData = FViSoLogNavTarget();
+	LoggerSubSystem->CurrentEditorSession.SessionLogs.Add(FViSoStoredLogData(LogData, NavData, true));
+	LoggerSubSystem->UpdateViSoLogUI.Broadcast();
+}
+
+
+void UViSoLoggerSubsystem::VSLogWithNav(FViSoLogData LogData, FViSoLogNavTarget NavData, FString ClassName, FString Line)
+{
+	GET_LOGGERSUBSYSTEM();
+	
+	const FString Log = ClassName + "[" + Line + "]: " + LogData.Message + LogData.WhatToDo;
+	UE_LOG(ViSoLog, Error, TEXT("%s"), *Log);
+
+	LoggerSubSystem->CurrentEditorSession.SessionLogs.Add(FViSoStoredLogData(LogData, NavData, true));
 	LoggerSubSystem->UpdateViSoLogUI.Broadcast();
 }
 

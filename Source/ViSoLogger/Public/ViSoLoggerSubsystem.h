@@ -7,24 +7,33 @@
 #include "Types/ViSoLoggerTypes.h"
 #include "ViSoLoggerSubsystem.generated.h"
 
+/**
+ * Declares an gets the logger subsystem as ptr
+ * Intended for static functions inside the logger subsystem
+ */
+#define GET_LOGGERSUBSYSTEM() static UViSoLoggerSubsystem* LoggerSubSystem; \
+if (!LoggerSubSystem) \
+{\
+	if(!GEngine) {return;}\
+	LoggerSubSystem = GEngine->GetEngineSubsystem<UViSoLoggerSubsystem>();\
+	if (!LoggerSubSystem) {return;}\
+}\
+
 #define GET_CLASSNAME_WITH_FUNCTION                FString(__FUNCTION__)
 #define GET_LINE_NUMBER                            FString::FromInt(__LINE__)
 
 /**
- *	Regular Log
- *  @param Instigator - Instigator that caused the log, will be auto set as navigation target
- *  @param LogData - Information about the log
+ * Basic VISO log with minimal needed information
+ * @param FViSoLogData - Minimal log data
  */
-#define VISO_LOG(Instigator, LogData) UViSoLoggerSubsystem::VSLog(LogData, FViSoLogNavigationData(Instigator), GET_CLASSNAME_WITH_FUNCTION, GET_LINE_NUMBER)
+#define VISO_LOG(FViSoLogData) UViSoLoggerSubsystem::VSLog(FViSoLogData, GET_CLASSNAME_WITH_FUNCTION, GET_LINE_NUMBER)
 
 /**
- *	Log that also allows a custom navigation target.
- *	Can be used if the instigator and the navigation target differs
- *  @param Instigator - Instigator that caused the log, will be auto set as navigation target
- *  @param NavigationTarget - 
- *  @param LogData - Information about the log
+ * Extended VISO log which enables you to to navigate to a preferred location within the editor or C++ code
+ * @param FViSoLogData - Minimal log data declared as
+ * @param FViSoLogNavTarget - Needed to navigate to a preferred location within the editor or C++ code
  */
-#define VISO_LOG_WithTarget(Instigator, NavigationTarget, LogData) UViSoLoggerSubsystem::VSLog(LogData, FViSoLogNavigationData(Instigator, NavigationTarget), GET_CLASSNAME_WITH_FUNCTION, GET_LINE_NUMBER)
+#define VISO_LOG_WITH_NAV(FViSoLogData, FViSoLogNavTarget) UViSoLoggerSubsystem::VSLogWithNav(FViSoLogData, FViSoLogNavTarget, GET_CLASSNAME_WITH_FUNCTION, GET_LINE_NUMBER)
 
 DECLARE_LOG_CATEGORY_EXTERN(ViSoLog, Log, All);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdateViSoLogUI);
@@ -49,10 +58,12 @@ public:
 	UPROPERTY(BlueprintReadOnly)
 	FViSoLogSessionData CurrentRuntimeSession;
 	
-	UFUNCTION(BlueprintCallable, DisplayName = "Print ViSo Log")
-	static void K2_VSLog(FString Message, FString WhatToDo);
+	UFUNCTION(BlueprintCallable, DisplayName = "Print ViSo Log", meta = (DefaultToSelf = Instigator))
+	static void K2_VSLog(UObject* Instigator, FString Message, FString WhatToDo);
 
-	static void VSLog(FViSoLogData LogData, FViSoLogNavigationData NavData, FString ClassName, FString Line);
+	static void VSLog(FViSoLogData LogData, FString ClassName, FString Line);
+
+	static void VSLogWithNav(FViSoLogData LogData, FViSoLogNavTarget NavData, FString ClassName, FString Line);
 
 private:
 	FString SaveGameName = "ViSoLogSave";

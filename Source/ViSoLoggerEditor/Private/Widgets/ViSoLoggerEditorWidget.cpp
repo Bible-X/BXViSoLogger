@@ -25,6 +25,8 @@ void UViSoLoggerEditorWidget::UpdateContent()
 			LogWidget->InitializeWidget();
 		}
 	}
+	
+	MainContentBox->ScrollToEnd();
 }
 
 void UViSoLoggerEditorWidget::NativeConstruct()
