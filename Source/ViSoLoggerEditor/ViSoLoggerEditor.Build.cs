@@ -11,7 +11,8 @@ public class ViSoLoggerEditor : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core"
+				"Core",
+				"ViSoLogger"
 				// ... add other public dependencies that you statically link with here ...
 			}
 		);
@@ -23,10 +24,14 @@ public class ViSoLoggerEditor : ModuleRules
 				"Engine",
 				"Slate",
 				"SlateCore",
+				"GameplayTags",
 				"UnrealEd",
 				"EditorSubsystem",
 				"Blutility",
-				"UMG"
+				"UMG",
+				"UMGEditor",
+				"DeveloperSettings", 
+				"EditorScriptingUtilities"
 			}
 			);
 	}

@@ -27,7 +27,7 @@
 #define VISO_LOG_WithTarget(Instigator, NavigationTarget, LogData) UViSoLoggerSubsystem::VSLog(LogData, FViSoLogNavigationData(Instigator, NavigationTarget), GET_CLASSNAME_WITH_FUNCTION, GET_LINE_NUMBER)
 
 DECLARE_LOG_CATEGORY_EXTERN(ViSoLog, Log, All);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdateDebuggerUI);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FUpdateViSoLogUI);
 
 class UViSoLogSave;
 
@@ -41,7 +41,7 @@ public:
 	TObjectPtr<UViSoLogSave> ViSoLogSave;
 
 	UPROPERTY(BlueprintAssignable)
-	FUpdateDebuggerUI UpdateDebuggerUI;
+	FUpdateViSoLogUI UpdateViSoLogUI;
 
 	UPROPERTY(BlueprintReadOnly)
 	FViSoLogSessionData CurrentEditorSession;
@@ -53,11 +53,11 @@ public:
 	static void K2_VSLog(FString Message, FString WhatToDo);
 
 	static void VSLog(FViSoLogData LogData, FViSoLogNavigationData NavData, FString ClassName, FString Line);
-	
-	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
-	
-	virtual void Deinitialize() override;
 
 private:
 	FString SaveGameName = "ViSoLogSave";
+
+	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	
+	virtual void Deinitialize() override;
 };

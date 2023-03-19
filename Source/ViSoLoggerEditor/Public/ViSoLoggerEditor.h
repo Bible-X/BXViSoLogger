@@ -1,14 +1,18 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// ©Vi-So Construction
 
 #pragma once
 
 #include "CoreMinimal.h"
 #include "Modules/ModuleManager.h"
 
+class UViSoLoggerSubsystem;
+
 class FViSoLoggerEditorModule : public IModuleInterface
 {
 public:
-	/** IModuleInterface implementation */
 	virtual void StartupModule() override;
 	virtual void ShutdownModule() override;
+
+private:
+	void CreateViSoLogToolbar(FToolBarBuilder& ToolbarBuilder) const;
 };

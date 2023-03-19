@@ -11,7 +11,7 @@ public class ViSoLogger : ModuleRules
 		PublicDependencyModuleNames.AddRange(
 			new string[]
 			{
-				"Core",
+				"Core"
 				// ... add other public dependencies that you statically link with here ...
 			}
 			);
@@ -25,14 +25,6 @@ public class ViSoLogger : ModuleRules
 				"Slate",
 				"SlateCore",
 				"GameplayTags"
-			}
-			);
-		
-		
-		DynamicallyLoadedModuleNames.AddRange(
-			new string[]
-			{
-				// ... add any modules that your module loads dynamically here ...
 			}
 			);
 	}

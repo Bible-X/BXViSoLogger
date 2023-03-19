@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+// ©Vi-So Construction
 
 #include "ViSoLogger.h"
 
@@ -6,7 +6,7 @@
 
 void FViSoLoggerModule::StartupModule()
 {
-	
+
 }
 
 void FViSoLoggerModule::ShutdownModule()

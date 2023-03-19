@@ -1,4 +1,4 @@
-// Fill out your copyright notice in the Description page of Project Settings.
+// ©Vi-So Construction
 
 #pragma once
 
@@ -8,6 +8,7 @@
 
 class UScrollBox;
 class UViSoLoggerSubsystem;
+class ULogLineWidget;
 
 UCLASS()
 class VISOLOGGEREDITOR_API UViSoLoggerEditorWidget : public UEditorUtilityWidget
@@ -17,6 +18,9 @@ class VISOLOGGEREDITOR_API UViSoLoggerEditorWidget : public UEditorUtilityWidget
 public:
 	UPROPERTY(BlueprintReadOnly, meta=(BindWidget))
 	UScrollBox* MainContentBox;
+
+	UPROPERTY(EditDefaultsOnly)
+	TSubclassOf<ULogLineWidget> LogWidgetClass;
 
 	UFUNCTION()
 	void UpdateContent();

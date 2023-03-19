@@ -20,7 +20,8 @@ void UViSoLoggerSubsystem::K2_VSLog(FString Message, FString WhatToDo)
 	
 	FViSoLogData LogData = FViSoLogData(Message, WhatToDo);
 	FViSoLogNavigationData NavData = FViSoLogNavigationData();
-	LoggerSubSystem->CurrentEditorSession.SessionLogs.Add(FViSoStoredLogData(LogData, NavData));
+	LoggerSubSystem->CurrentEditorSession.SessionLogs.Insert(FViSoStoredLogData(LogData, NavData, false), 0);
+	LoggerSubSystem->UpdateViSoLogUI.Broadcast();
 }
 
 void UViSoLoggerSubsystem::VSLog(FViSoLogData LogData, FViSoLogNavigationData NavData, FString ClassName, FString Line)
@@ -36,7 +37,8 @@ void UViSoLoggerSubsystem::VSLog(FViSoLogData LogData, FViSoLogNavigationData Na
 	const FString Log = ClassName + "[" + Line + "]: " + LogData.Message + LogData.WhatToDo;
 	UE_LOG(ViSoLog, Error, TEXT("%s"), *Log);
 
-	LoggerSubSystem->CurrentEditorSession.SessionLogs.Add(FViSoStoredLogData(LogData, NavData));
+	LoggerSubSystem->CurrentEditorSession.SessionLogs.Insert(FViSoStoredLogData(LogData, NavData, true), 0);
+	LoggerSubSystem->UpdateViSoLogUI.Broadcast();
 }
 
 void UViSoLoggerSubsystem::Initialize(FSubsystemCollectionBase& Collection)
