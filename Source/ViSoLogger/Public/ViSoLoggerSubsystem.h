@@ -31,7 +31,7 @@ if (!LoggerSubSystem) \
 /**
  * Extended VISO log which enables you to to navigate to a preferred location within the editor or C++ code
  * @param FViSoLogData - Minimal log data declared as
- * @param FViSoLogNavTarget - Needed to navigate to a preferred location within the editor or C++ code
+ * @param FViSoLogNavTarget - Can be of type, AActor, UClass or UObject.
  */
 #define VISO_LOG_WITH_NAV(FViSoLogData, FViSoLogNavTarget) UViSoLoggerSubsystem::VSLogWithNav(FViSoLogData, FViSoLogNavTarget, GET_CLASSNAME_WITH_FUNCTION, GET_LINE_NUMBER)
 
@@ -59,7 +59,7 @@ public:
 	FViSoLogSessionData CurrentRuntimeSession;
 	
 	UFUNCTION(BlueprintCallable, DisplayName = "Print ViSo Log", meta = (DefaultToSelf = Instigator))
-	static void K2_VSLog(UObject* Instigator, FString Message, FString WhatToDo);
+	static void K2_VSLog(EVSL_Verbosity Category, UObject* Instigator, FString Message, FString WhatToDo);
 
 	static void VSLog(FViSoLogData LogData, FString ClassName, FString Line);
 

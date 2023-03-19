@@ -6,13 +6,13 @@
 
 DEFINE_LOG_CATEGORY(ViSoLog)
 
-void UViSoLoggerSubsystem::K2_VSLog(UObject* Instigator, FString Message, FString WhatToDo)
+void UViSoLoggerSubsystem::K2_VSLog(EVSL_Verbosity Category, UObject* Instigator, FString Message, FString WhatToDo)
 {
 	GET_LOGGERSUBSYSTEM();
 	
 	UE_LOG(ViSoLog, Error, TEXT("%s"), *Message);
 	
-	FViSoLogData LogData = FViSoLogData(Instigator, Message, WhatToDo);
+	FViSoLogData LogData = FViSoLogData(Category, Instigator, Message, WhatToDo);
 	FViSoLogNavTarget NavData = FViSoLogNavTarget();
 	LoggerSubSystem->CurrentEditorSession.SessionLogs.Add(FViSoStoredLogData(LogData, NavData, false));
 	LoggerSubSystem->UpdateViSoLogUI.Broadcast();
